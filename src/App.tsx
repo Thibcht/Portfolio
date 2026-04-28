@@ -263,7 +263,7 @@ const ProjectCard = ({ project, index, onClick }: { project: Project; index: num
       transition={{ delay: index * 0.1, duration: 0.8 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="group relative aspect-[4/5] overflow-hidden bg-brand-gray cursor-pointer"
+      className="group relative aspect-[5/5] overflow-hidden bg-brand-gray cursor-pointer"
     >
       <motion.img
         src={project.image}
