@@ -51,13 +51,66 @@ const PROJECTS: Project[] = [
   },
   {
     id: 4,
-    title: "JDC",
+    title: "",
+    category: "Restaurant Branding",
+    year: "2026",
+    image: "/crepe.gif",
+    video: "/crepe.mp4",
+    color: "#9900ff",
+  },
+  
+    {
+    id: 5,
+    title: "",
     category: "Corporate Ad",
     year: "2020",
     image: "/jdcimg.png",
     video: "/PRESENTATION JDCComm.mp4",
     color: "#9900ff",
   },
+
+   {
+    id: 6,
+    title: "",
+    category: "Mascot",
+    year: "2025",
+    image: "/ziggy.png",
+    video: "/overview.mp4",
+    color: "#9900ff",
+  },
+
+   {
+    id: 7,
+    title: "",
+    category: "Event opening",
+    year: "2024",
+    image: "/afk.png",
+    video: "/afk24.mp4",
+    color: "#9900ff",
+  },
+
+  {
+    id: 8,
+    title: "",
+    category: "Animation",
+    year: "2021",
+    image: "/basket.png",
+    video: "/basket.mp4",
+    color: "#9900ff",
+  },
+
+  {
+    id: 9,
+    title: "",
+    category: "Product Demo",
+    year: "2025",
+    image: "/data.png",
+    video: "/summerrelease.mp4",
+    color: "#9900ff",
+  },
+
+
+ 
 ];
 
 // --- Components ---
@@ -89,7 +142,7 @@ const Navbar = () => {
   <img src="logo.png" className="w-full h-full object-contain" />
 </div>
         <span className="text-2xl font-display font-bold tracking-tighter hidden sm:block">
-          CHAINTRIER THIBAUT<span className="text-brand-gray">.</span>
+          CHAINTRIER THIBAUT<span className="text-brand-gray"></span>
         </span>
       </motion.div>
 
@@ -106,13 +159,14 @@ const Navbar = () => {
             {item}
           </motion.a>
         ))}
-        <motion.button
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="bg-brand-white text-brand-black px-6 py-2 text-xs font-bold tracking-widest hover:bg-brand-gray hover:text-brand-white transition-all"
-        >
-          START A PROJECT
-        </motion.button>
+        <motion.a
+  href="mailto:chaintrierthibaut@gmail.com?subject=Project Inquiry&body=Hello, I would like to start a project with you."
+  initial={{ opacity: 0, scale: 0.9 }}
+  animate={{ opacity: 1, scale: 1 }}
+  className="bg-brand-white text-brand-black px-6 py-2 text-xs font-bold tracking-widest hover:bg-brand-gray hover:text-brand-white transition-all inline-block"
+>
+  START A PROJECT
+</motion.a>
       </div>
 
       <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
@@ -176,8 +230,8 @@ const Hero = () => {
         >
           <span className="text-xs font-bold tracking-[0.3em] text-gray-300 uppercase">Motion Design Studio</span>
           <h1 className="text-6xl md:text-[6vw] font-display font-black leading-[0.9] tracking-tighter">
-            VOS IDEES <br />
-            <span className="text-transparent stroke-white stroke-1" style={{ WebkitTextStroke: "1px white" }}>EN MOUVEMENT.</span>
+            YOUR IDEAS <br />
+            <span className="text-transparent stroke-white stroke-1" style={{ WebkitTextStroke: "1px white" }}>IN MOTION</span>
           </h1>
           
           <motion.div 
@@ -251,7 +305,19 @@ const Hero = () => {
   );
 };
 
-const ProjectCard = ({ project, index, onClick }: { project: Project; index: number; onClick?: () => void }) => {
+const ProjectCard = ({
+  project,
+  index,
+  isSmall = false,
+  onClick,
+  variants,
+}: {
+  project: Project;
+  index: number;
+  isSmall?: boolean;
+  onClick?: () => void;
+  variants?: any;
+}) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -263,8 +329,12 @@ const ProjectCard = ({ project, index, onClick }: { project: Project; index: num
       transition={{ delay: index * 0.1, duration: 0.8 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="group relative aspect-[5/5] overflow-hidden bg-brand-gray cursor-pointer"
+      className={`group relative overflow-hidden bg-brand-gray cursor-pointer
+  ${isSmall ? "aspect-[5/5]" : "aspect-[3/5]" } 
+`}
     >
+      
+    
       <motion.img
         src={project.image}
         alt={project.title}
@@ -279,7 +349,7 @@ const ProjectCard = ({ project, index, onClick }: { project: Project; index: num
       <div className="absolute bottom-0 left-0 w-full p-8 flex flex-col gap-2">
         <div className="flex justify-between items-end">
           <div>
-            <span className="text-[10px] font-bold tracking-widest text-brand-gray uppercase mb-2 block">
+            <span className="text-[10px] font-regular tracking-widest text-light-gray uppercase mb-2 block">
               {project.category} — {project.year}
             </span>
             <h3 className="text-3xl font-display font-bold tracking-tighter group-hover:translate-x-2 transition-transform duration-500">
@@ -305,8 +375,32 @@ const ProjectCard = ({ project, index, onClick }: { project: Project; index: num
     </motion.div>
   );
 };
+const gridVariants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.12,
+    },
+  },
+};
 
+const cardVariants = {
+  hidden: {
+    opacity: 0,
+    y: 40,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.7,
+      ease: "easeOut",
+    },
+  },
+};
 const Work = ({ setActiveVideo }: { setActiveVideo: (video: string) => void }) => {
+  const [showAllProjects, setShowAllProjects] = useState(false);
+  
   return (
     <section id="work" className="py-24 md:py-48 px-6 md:px-12 bg-brand-black">
       <div className="max-w-7xl mx-auto">
@@ -331,16 +425,50 @@ const Work = ({ setActiveVideo }: { setActiveVideo: (video: string) => void }) =
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24">
-          {PROJECTS.map((project, i) => (
-            <ProjectCard 
-  key={project.id} 
-  project={project} 
-  index={i} 
-  onClick={() => project.video && setActiveVideo(project.video)}
-/>
-          ))}
-        </div>
+       <div className="grid grid-cols-2 md:grid-cols-3 gap-12 md:gap-24">
+  {PROJECTS
+    .filter((_, i) => showAllProjects || i < 3)
+    .map((project, i) => (
+      <ProjectCard
+        key={project.id}
+        project={project}
+        index={i}
+
+
+        isSmall={i >= 3}
+  variants={cardVariants}
+
+
+        onClick={() => project.video && setActiveVideo(project.video)}
+      />
+    ))}
+</div>
+
+
+{!showAllProjects && (
+  <div className="mt-24 flex justify-center">
+    <button
+      onClick={() => setShowAllProjects(true)}
+      className="group flex items-center gap-4 text-xs font-bold tracking-[0.3em] uppercase border-b border-brand-gray pb-2 hover:border-brand-white transition-all"
+    >
+      View All Projects
+      <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
+    </button>
+  </div>
+)}
+
+
+{showAllProjects && (
+  <div className="mt-24 flex justify-center">
+    <button
+      onClick={() => setShowAllProjects(false)}
+      className="group flex items-center gap-4 text-xs font-bold tracking-[0.3em] uppercase border-b border-brand-gray pb-2 hover:border-brand-white transition-all"
+    >
+      Back
+      <ArrowRight size={14} className="rotate-180 group-hover:-translate-x-2 transition-transform" />
+    </button>
+  </div>
+)}
 
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -348,19 +476,24 @@ const Work = ({ setActiveVideo }: { setActiveVideo: (video: string) => void }) =
           viewport={{ once: true }}
           className="mt-24 flex justify-center"
         >
-          <button className="group flex items-center gap-4 text-xs font-bold tracking-[0.3em] uppercase border-b border-brand-gray pb-2 hover:border-brand-white transition-all">
-            View All Projects
-            <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
-          </button>
+          
+
+
+
+
+
+
         </motion.div>
       </div>
     </section>
   );
 };
 
+
+
 const Studio = () => {
   return (
-    <section id="studio" className="py-24 md:py-48 px-6 md:px-12 bg-red-1000">
+    <section id="studio" className="py-12 md:py-24 px-6 md:px-12 bg-red-1000">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
@@ -382,7 +515,7 @@ const Studio = () => {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-xs font-bold tracking-[0.3em] text-brand-gray uppercase"
+            className="text-xs font-bold tracking-[0.3em] text-gray-300 uppercase"
           >
             The Studio
           </motion.span>
@@ -400,7 +533,7 @@ const Studio = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-lg text-brand-gray leading-relaxed"
+            className="text-lg text-gray-300 leading-relaxed"
           >
             I'm a motion designer based in La Rochelle. With over 10 years of experience,
             I’m a director, designer, and animator driven by a deep passion for visual storytelling.
@@ -423,7 +556,7 @@ const Studio = () => {
                 transition={{ delay: 0.3 + i * 0.1 }}
               >
                 <div className="text-3xl font-display font-bold">{stat.value}</div>
-                <div className="text-[10px] font-bold tracking-widest text-brand-gray uppercase">{stat.label}</div>
+                <div className="text-[10px] font-bold tracking-widest text-gray-300 uppercase">{stat.label}</div>
               </motion.div>
             ))}
           </div>
@@ -435,13 +568,13 @@ const Studio = () => {
 
 const Footer = () => {
   return (
-    <footer id="contact" className="bg-brand-black pt-24 pb-12 px-6 md:px-12 border-t border-brand-gray">
+    <footer id="contact" className="bg-brand-black pt-48 pb-12 px-6 md:px-12 border-t border-brand-gray">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-24">
           <div className="lg:col-span-2">
             <h2 className="text-4xl md:text-7xl font-display font-black tracking-tighter mb-8">
               LET'S MAKE <br />
-              IT <span className="text-brand-gray italic">MOVE.</span>
+              IT <span className="text-transparent stroke-white stroke-1" style={{ WebkitTextStroke: "1px white" }}>MOVE</span>
             </h2>
             <a href="mailto:hello@woodwork.studio" className="text-2xl md:text-3xl font-display font-bold hover:text-brand-gray transition-colors">
               chaintrierthibaut@gmail.com
@@ -449,7 +582,7 @@ const Footer = () => {
           </div>
           
           <div className="flex flex-col gap-6">
-            <span className="text-[10px] font-bold tracking-widest text-brand-gray uppercase">Address</span>
+            <span className="text-[10px] font-bold tracking-widest text-gray-300 uppercase">Address</span>
             <p className="text-sm leading-relaxed">
             Everywhere on the web…<p></p>
             But somehow still hiding near La Rochelle 👀
@@ -457,7 +590,7 @@ const Footer = () => {
           </div>
 
           <div className="flex flex-col gap-6">
-            <span className="text-[10px] font-bold tracking-widest text-brand-gray uppercase">Social</span>
+            <span className="text-[10px] font-bold tracking-widest text-gray-300 uppercase">Social</span>
             <div className="flex gap-4">
               <a href="https://www.instagram.com/thib_chtt/?hl=fr" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-brand-gray flex items-center justify-center hover:bg-brand-white hover:text-brand-black transition-all ">
                 <Instagram size={18} />
